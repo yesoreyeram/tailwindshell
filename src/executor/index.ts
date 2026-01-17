@@ -25,7 +25,7 @@ export class CommandExecutor {
       env: { ...process.env, ...context.env },
       sudo: context.sudo || false,
       securityPolicy: { ...DEFAULT_SECURITY_POLICY, ...context.securityPolicy },
-      timeout: context.timeout || 30000,
+      timeout: context.timeout || 0, // No timeout by default - let it run!
       verbose: context.verbose || false,
     };
   }
@@ -50,9 +50,9 @@ export class CommandExecutor {
     const sanitized = sanitizeCommand(shellCommand);
 
     if (this.context.verbose) {
-      console.log(`[Tailwindshell] Executing: ${sanitized}`);
+      console.log(`[Tailwindshell] 🚀 Executing: ${sanitized}`);
       if (validation.warnings.length > 0) {
-        console.warn(`[Tailwindshell] Warnings: ${validation.warnings.join(', ')}`);
+        console.warn(`[Tailwindshell] ⚠️  ${validation.warnings.join(' ')}`);
       }
     }
 
@@ -85,7 +85,7 @@ export class CommandExecutor {
   }
 
   /**
-   * Execute shell command with timeout
+   * Execute shell command (with optional timeout if you really want one)
    */
   private async executeCommand(
     command: string,
@@ -94,10 +94,14 @@ export class CommandExecutor {
     const shell = options.shell || '/bin/bash';
 
     return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        child.kill('SIGTERM');
-        reject(new Error(`Command timeout after ${this.context.timeout}ms`));
-      }, this.context.timeout);
+      // Only set timeout if explicitly provided and > 0
+      let timeout: NodeJS.Timeout | undefined;
+      if (this.context.timeout && this.context.timeout > 0) {
+        timeout = setTimeout(() => {
+          child.kill('SIGTERM');
+          reject(new Error(`Command timeout after ${this.context.timeout}ms`));
+        }, this.context.timeout);
+      }
 
       let stdout = '';
       let stderr = '';
@@ -125,12 +129,12 @@ export class CommandExecutor {
       }
 
       child.on('error', (error) => {
-        clearTimeout(timeout);
+        if (timeout) clearTimeout(timeout);
         reject(error);
       });
 
       child.on('close', (code) => {
-        clearTimeout(timeout);
+        if (timeout) clearTimeout(timeout);
         resolve({
           stdout,
           stderr,
@@ -161,10 +165,14 @@ export class CommandExecutor {
     const finalCommand = this.context.sudo ? `sudo ${sanitized}` : sanitized;
 
     return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        child.kill('SIGTERM');
-        reject(new Error(`Command timeout after ${this.context.timeout}ms`));
-      }, this.context.timeout);
+      // Only set timeout if explicitly provided and > 0
+      let timeout: NodeJS.Timeout | undefined;
+      if (this.context.timeout && this.context.timeout > 0) {
+        timeout = setTimeout(() => {
+          child.kill('SIGTERM');
+          reject(new Error(`Command timeout after ${this.context.timeout}ms`));
+        }, this.context.timeout);
+      }
 
       let stdout = '';
       let stderr = '';
@@ -187,12 +195,12 @@ export class CommandExecutor {
       });
 
       child.on('error', (error) => {
-        clearTimeout(timeout);
+        if (timeout) clearTimeout(timeout);
         reject(error);
       });
 
       child.on('close', (code) => {
-        clearTimeout(timeout);
+        if (timeout) clearTimeout(timeout);
         resolve({
           stdout,
           stderr,
