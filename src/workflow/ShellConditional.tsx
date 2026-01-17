@@ -2,7 +2,7 @@
  * ShellConditional - Conditional command execution
  */
 
-import { useState, useEffect, useRef, ReactNode } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ShellConditionalProps } from '../types/workflow';
 
 /**
@@ -37,7 +37,7 @@ import type { ShellConditionalProps } from '../types/workflow';
  * ```
  */
 export function ShellConditional(props: ShellConditionalProps): JSX.Element | null {
-  const { condition, then: thenBranch, else: elseBranch, onComplete } = props;
+  const { condition, then: thenBranch, else: elseBranch, onComplete: _onComplete } = props;
 
   const [shouldExecuteThen, setShouldExecuteThen] = useState<boolean | null>(null);
   const [isEvaluating, setIsEvaluating] = useState(false);

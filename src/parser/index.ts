@@ -6,15 +6,18 @@ import { ParsedCommand, ParserOptions, CommandOperator } from '../types';
 import { Tokenizer, tokensToCommand, Token, TokenType } from './tokenizer';
 
 export class CommandParser {
-  private options: ParserOptions;
+  // private options: ParserOptions; // Not currently used
 
   constructor(options: ParserOptions = {}) {
-    this.options = {
+    // Store options for future use
+    const _opts = {
       allowConditionals: true,
       allowLoops: true,
       allowVariables: true,
       ...options,
     };
+    // Options configured but not currently used in parsing logic
+    void _opts;
   }
 
   /**

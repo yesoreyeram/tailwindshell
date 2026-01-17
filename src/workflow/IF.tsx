@@ -73,7 +73,7 @@ export interface ElseProps {
  * </IF>
  * ```
  */
-export function ElseIf(props: ElseIfProps): null {
+export function ElseIf(_props: ElseIfProps): null {
   // This component doesn't render itself
   // It's processed by the IF component
   return null;
@@ -92,7 +92,7 @@ export function ElseIf(props: ElseIfProps): null {
  * </IF>
  * ```
  */
-export function Else(props: ElseProps): null {
+export function Else(_props: ElseProps): null {
   // This component doesn't render itself
   // It's processed by the IF component
   return null;

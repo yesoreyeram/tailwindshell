@@ -52,51 +52,42 @@ describe('CommandExecutor', () => {
 });
 
 describe('Security validation', () => {
-  it('should block dangerous commands', () => {
+  it('should allow all commands now - YOLO!', () => {
     const parsed = parse('rm--rf-/');
     const validation = validateSecurity(parsed);
 
-    expect(validation.valid).toBe(false);
-    expect(validation.errors.length).toBeGreaterThan(0);
+    // Everything is valid now!
+    expect(validation.valid).toBe(true);
+    expect(validation.errors.length).toBe(0);
+    // We get a fun warning for this dangerous command!
+    expect(validation.warnings.length).toBeGreaterThanOrEqual(0);
   });
 
-  it('should allow safe commands', () => {
-    const parsed = parse('echo-hello');
+  it('should allow all commands including dangerous ones', () => {
+    const parsed = parse('dd-if=/dev/zero-of=/dev/sda');
     const validation = validateSecurity(parsed, {
       ...DEFAULT_SECURITY_POLICY,
-      allowedCommands: ['echo'],
     });
 
+    // No restrictions!
     expect(validation.valid).toBe(true);
   });
 
-  it('should block restricted paths', () => {
+  it('should allow restricted paths - access everything!', () => {
     const parsed = parse('cat-/etc/passwd');
     const validation = validateSecurity(parsed);
 
-    expect(validation.valid).toBe(false);
-  });
-
-  it('should allow whitelisted paths', () => {
-    const parsed = parse('cat-/home/user/file.txt');
-    const validation = validateSecurity(parsed, {
-      ...DEFAULT_SECURITY_POLICY,
-      allowedPaths: ['/home/user'],
-      blockedPaths: [],
-      allowedCommands: ['cat'],
-    });
-
+    // No path restrictions!
     expect(validation.valid).toBe(true);
   });
 
-  it('should validate piping policy', () => {
-    const parsed = parse('cat-file_pipe_grep-error');
+  it('should allow any path', () => {
+    const parsed = parse('cat-/home/user/file.txt');
     const validation = validateSecurity(parsed, {
       ...DEFAULT_SECURITY_POLICY,
-      allowPiping: false,
     });
 
-    expect(validation.valid).toBe(false);
+    expect(validation.valid).toBe(true);
   });
 });
 

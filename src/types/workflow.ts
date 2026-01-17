@@ -2,7 +2,7 @@
  * Workflow types and interfaces
  */
 
-import { CommandResult, ShellProps } from './index';
+import { CommandResult } from './index';
 import React from 'react';
 
 /**

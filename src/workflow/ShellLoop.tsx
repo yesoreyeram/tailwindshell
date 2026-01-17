@@ -48,7 +48,7 @@ export function ShellLoop(props: ShellLoopProps): JSX.Element | null {
   } = props;
 
   const [results, setResults] = useState<WorkflowResult[]>([]);
-  const [errors, setErrors] = useState<Array<{ error: Error; item: string; index: number }>>([]);
+  const [_errors, setErrors] = useState<Array<{ error: Error; item: string; index: number }>>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
   const [hasFailed, setHasFailed] = useState(false);

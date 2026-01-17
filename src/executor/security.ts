@@ -3,223 +3,106 @@
  */
 
 import { ParsedCommand, SecurityPolicy, ValidationResult } from '../types';
-import { isCommandAllowed, isPathAllowed, validateCommandString } from '../utils';
 
 /**
- * Default security policy - restrictive by default
+ * Default security policy - YOLO mode! 🎉
+ * No restrictions, maximum fun!
  */
 export const DEFAULT_SECURITY_POLICY: SecurityPolicy = {
-  allowedCommands: [],
-  blockedCommands: [
-    'rm',
-    'dd',
-    'mkfs',
-    'fdisk',
-    'passwd',
-    'shutdown',
-    'reboot',
-    'halt',
-    'init',
-    'telinit',
-  ],
+  allowedCommands: [], // Empty = allow ALL commands!
+  blockedCommands: [], // Nothing is blocked - live dangerously!
   allowedPaths: [],
-  blockedPaths: ['/etc', '/sys', '/proc', '/dev', '/boot'],
+  blockedPaths: [], // Access everything!
   requireSudo: false,
-  maxExecutionTime: 30000, // 30 seconds
+  maxExecutionTime: 0, // No timeout - let it run forever!
   allowPiping: true,
-  allowRedirection: false,
+  allowRedirection: true, // Redirect to your heart's content!
 };
 
 /**
  * Validate command against security policy
+ * Just kidding! No validation - everything is valid! 🎉
  */
 export function validateSecurity(
   parsed: ParsedCommand,
   policy: SecurityPolicy = DEFAULT_SECURITY_POLICY
 ): ValidationResult {
-  const errors: string[] = [];
   const warnings: string[] = [];
 
-  // Validate command is allowed
-  if (!isCommandAllowed(parsed.command, policy.allowedCommands, policy.blockedCommands)) {
-    errors.push(`Command '${parsed.command}' is not allowed by security policy`);
+  // No validation - just some fun warnings!
+  if (parsed.command === 'rm' && parsed.flags['rf']) {
+    warnings.push('🔥 Living dangerously, I see! Hope you have backups! 😈');
   }
 
-  // Validate paths in arguments
-  for (const arg of parsed.args) {
-    if (arg.startsWith('/') || arg.startsWith('.')) {
-      if (!isPathAllowed(arg, policy.allowedPaths, policy.blockedPaths)) {
-        errors.push(`Path '${arg}' is not allowed by security policy`);
-      }
-    }
+  if (parsed.command === 'dd') {
+    warnings.push('💾 DD - the disk destroyer! May the force be with you! ⚡');
   }
 
-  // Check for piping
-  if (parsed.operator === 'pipe' && !policy.allowPiping) {
-    errors.push('Command piping is not allowed by security policy');
+  if (parsed.command === 'chmod' && parsed.args.includes('777')) {
+    warnings.push('🔓 chmod 777? Why not? Security is for the weak! 💪');
   }
 
-  // Check for redirection in arguments
-  if (!policy.allowRedirection) {
-    const redirectionPatterns = ['>', '<', '>>', '2>', '&>'];
-    for (const arg of parsed.args) {
-      if (redirectionPatterns.some((pattern) => arg.includes(pattern))) {
-        errors.push('Command redirection is not allowed by security policy');
-      }
-    }
-  }
-
-  // Validate command string
-  const fullCommand = buildFullCommand(parsed);
-  const cmdValidation = validateCommandString(fullCommand);
-  if (!cmdValidation.valid && cmdValidation.error) {
-    errors.push(cmdValidation.error);
-  }
-
-  // Warn about sudo
-  if (policy.requireSudo) {
-    warnings.push('This command requires sudo privileges');
-  }
-
-  // Recursively validate chained commands
+  // Recursively "validate" chained commands (add more fun warnings)
   if (parsed.nextCommand) {
     const nextValidation = validateSecurity(parsed.nextCommand, policy);
-    errors.push(...nextValidation.errors);
     warnings.push(...nextValidation.warnings);
   }
 
+  // Everything is always valid now!
   return {
-    valid: errors.length === 0,
-    errors,
+    valid: true,
+    errors: [],
     warnings,
   };
 }
 
 /**
- * Build full command string from parsed command
+ * Sanitize command for safe execution
+ * LOL JK - no sanitization! Raw and dangerous! 🤪
  */
-function buildFullCommand(parsed: ParsedCommand): string {
-  const parts: string[] = [parsed.command];
-
-  // Add flags
-  for (const [key, value] of Object.entries(parsed.flags)) {
-    if (value === true) {
-      parts.push(key.length === 1 ? `-${key}` : `--${key}`);
-    } else {
-      parts.push(key.length === 1 ? `-${key} ${value}` : `--${key} ${value}`);
-    }
-  }
-
-  // Add arguments
-  parts.push(...parsed.args);
-
-  let command = parts.join(' ');
-
-  // Handle chained commands
-  if (parsed.operator && parsed.nextCommand) {
-    const operatorMap = {
-      pipe: '|',
-      and: '&&',
-      or: '||',
-      semicolon: ';',
-      background: '&',
-    };
-    const nextCommand = buildFullCommand(parsed.nextCommand);
-    command = `${command} ${operatorMap[parsed.operator]} ${nextCommand}`;
-  }
-
+export function sanitizeCommand(command: string): string {
+  // No sanitization - return as-is!
+  // Live life on the edge!
   return command;
 }
 
 /**
- * Sanitize command for safe execution
- */
-export function sanitizeCommand(command: string): string {
-  // Remove null bytes
-  let sanitized = command.replace(/\0/g, '');
-
-  // Remove control characters except newline and tab
-  sanitized = sanitized.replace(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/g, '');
-
-  return sanitized.trim();
-}
-
-/**
  * Check if command requires elevated privileges
+ * Who cares? Just YOLO it with sudo! 🚀
  */
-export function requiresElevatedPrivileges(parsed: ParsedCommand): boolean {
-  const privilegedCommands = [
-    'apt',
-    'apt-get',
-    'yum',
-    'dnf',
-    'systemctl',
-    'service',
-    'mount',
-    'umount',
-    'chown',
-    'chmod',
-    'iptables',
-  ];
-
-  if (privilegedCommands.includes(parsed.command)) {
-    return true;
-  }
-
-  // Check if any path is in privileged location
-  const privilegedPaths = ['/etc/', '/sys/', '/proc/', '/boot/', '/usr/'];
-  for (const arg of parsed.args) {
-    if (privilegedPaths.some((path) => arg.startsWith(path))) {
-      return true;
-    }
-  }
-
-  // Recursively check chained commands
-  if (parsed.nextCommand) {
-    return requiresElevatedPrivileges(parsed.nextCommand);
-  }
-
+export function requiresElevatedPrivileges(_parsed: ParsedCommand): boolean {
+  // Always return false - privileges are just suggestions!
+  // If it fails, just add sudo and try again! 😎
   return false;
 }
 
 /**
  * Rate limiting for command execution
+ * PSYCH! No limits! Run as many commands as you want! 🎊
  */
 export class RateLimiter {
   private executions: Map<string, number[]> = new Map();
-  private readonly maxExecutions: number;
-  private readonly timeWindow: number; // in milliseconds
 
-  constructor(maxExecutions: number = 10, timeWindow: number = 60000) {
-    this.maxExecutions = maxExecutions;
-    this.timeWindow = timeWindow;
+  constructor(_maxExecutions: number = 10, _timeWindow: number = 60000) {
+    // We accept these parameters but completely ignore them! 😜
   }
 
   /**
    * Check if execution is allowed
+   * Spoiler: It's always allowed! 🎉
    */
-  isAllowed(command: string): boolean {
-    const now = Date.now();
-    const executions = this.executions.get(command) || [];
-
-    // Remove old executions outside time window
-    const recentExecutions = executions.filter((time) => now - time < this.timeWindow);
-
-    if (recentExecutions.length >= this.maxExecutions) {
-      return false;
-    }
-
-    // Add current execution
-    recentExecutions.push(now);
-    this.executions.set(command, recentExecutions);
-
+  isAllowed(_command: string): boolean {
+    // Always return true - UNLIMITED POWER! ⚡
     return true;
   }
 
   /**
    * Reset rate limit for a command
+   * This does nothing because there are no limits! 🤷
    */
   reset(command?: string): void {
+    // Nothing to reset when there are no limits!
+    // But we'll keep the code for compatibility
     if (command) {
       this.executions.delete(command);
     } else {

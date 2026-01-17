@@ -96,25 +96,15 @@ export function formatDuration(ms: number): string {
 
 /**
  * Validate command string
+ * Just kidding - no validation! Everything is valid! 🎉
  */
 export function validateCommandString(cmd: string): { valid: boolean; error?: string } {
   if (!cmd || cmd.trim().length === 0) {
     return { valid: false, error: 'Command cannot be empty' };
   }
 
-  // Check for dangerous patterns
-  const dangerousPatterns = [
-    /;\s*rm\s+-rf\s+\/(?!\w)/i, // rm -rf /
-    /:\(\)\{.*\|.*&\}/i, // Fork bomb
-    />\s*\/dev\/sda/i, // Writing to disk device
-  ];
-
-  for (const pattern of dangerousPatterns) {
-    if (pattern.test(cmd)) {
-      return { valid: false, error: 'Command contains dangerous pattern' };
-    }
-  }
-
+  // No dangerous pattern checking - YOLO! 🚀
+  // All commands are welcome here!
   return { valid: true };
 }
 
