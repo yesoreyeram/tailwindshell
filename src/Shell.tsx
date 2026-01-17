@@ -33,9 +33,9 @@ export function Shell(props: ShellProps): JSX.Element | null {
     verbose = false,
   } = props;
 
-  const [result, setResult] = useState<CommandResult | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const [isExecuting, setIsExecuting] = useState(false);
+  const [_result, setResult] = useState<CommandResult | null>(null);
+  const [_error, setError] = useState<Error | null>(null);
+  const [_isExecuting, setIsExecuting] = useState(false);
   const executedRef = useRef(false);
 
   useEffect(() => {

@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Shell } from '../Shell';
-import type { ShellParallelProps, WorkflowStep, WorkflowResult } from '../types/workflow';
+import type { ShellParallelProps, WorkflowResult } from '../types/workflow';
 import type { CommandResult } from '../types';
 
 /**

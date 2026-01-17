@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Shell } from '../Shell';
 import type {
   ShellPipelineProps,
-  WorkflowStep,
   WorkflowResult,
   WorkflowContext,
 } from '../types/workflow';

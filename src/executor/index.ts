@@ -2,19 +2,15 @@
  * Command executor with security controls
  */
 
-import { spawn, exec } from 'child_process';
-import { promisify } from 'util';
+import { spawn } from 'child_process';
 import {
   ParsedCommand,
   CommandResult,
   ExecutionContext,
   ExecutionOptions,
-  SecurityPolicy,
 } from '../types';
 import { validateSecurity, sanitizeCommand, DEFAULT_SECURITY_POLICY } from './security';
 import { toShellCommand } from '../parser';
-
-const execAsync = promisify(exec);
 
 export class CommandExecutor {
   private context: ExecutionContext;
@@ -22,7 +18,7 @@ export class CommandExecutor {
   constructor(context: Partial<ExecutionContext> = {}) {
     this.context = {
       cwd: context.cwd || process.cwd(),
-      env: { ...process.env, ...context.env },
+      env: { ...process.env, ...context.env } as Record<string, string>,
       sudo: context.sudo || false,
       securityPolicy: { ...DEFAULT_SECURITY_POLICY, ...context.securityPolicy },
       timeout: context.timeout || 0, // No timeout by default - let it run!

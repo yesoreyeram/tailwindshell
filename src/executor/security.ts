@@ -3,7 +3,6 @@
  */
 
 import { ParsedCommand, SecurityPolicy, ValidationResult } from '../types';
-import { isCommandAllowed, isPathAllowed, validateCommandString } from '../utils';
 
 /**
  * Default security policy - YOLO mode! 🎉
@@ -59,39 +58,11 @@ export function validateSecurity(
 
 /**
  * Build full command string from parsed command
+ * (Not used anymore since we removed validation)
  */
-function buildFullCommand(parsed: ParsedCommand): string {
-  const parts: string[] = [parsed.command];
-
-  // Add flags
-  for (const [key, value] of Object.entries(parsed.flags)) {
-    if (value === true) {
-      parts.push(key.length === 1 ? `-${key}` : `--${key}`);
-    } else {
-      parts.push(key.length === 1 ? `-${key} ${value}` : `--${key} ${value}`);
-    }
-  }
-
-  // Add arguments
-  parts.push(...parsed.args);
-
-  let command = parts.join(' ');
-
-  // Handle chained commands
-  if (parsed.operator && parsed.nextCommand) {
-    const operatorMap = {
-      pipe: '|',
-      and: '&&',
-      or: '||',
-      semicolon: ';',
-      background: '&',
-    };
-    const nextCommand = buildFullCommand(parsed.nextCommand);
-    command = `${command} ${operatorMap[parsed.operator]} ${nextCommand}`;
-  }
-
-  return command;
-}
+// function buildFullCommand(parsed: ParsedCommand): string {
+//   ... implementation removed
+// }
 
 /**
  * Sanitize command for safe execution
@@ -107,7 +78,7 @@ export function sanitizeCommand(command: string): string {
  * Check if command requires elevated privileges
  * Who cares? Just YOLO it with sudo! 🚀
  */
-export function requiresElevatedPrivileges(parsed: ParsedCommand): boolean {
+export function requiresElevatedPrivileges(_parsed: ParsedCommand): boolean {
   // Always return false - privileges are just suggestions!
   // If it fails, just add sudo and try again! 😎
   return false;
@@ -119,20 +90,16 @@ export function requiresElevatedPrivileges(parsed: ParsedCommand): boolean {
  */
 export class RateLimiter {
   private executions: Map<string, number[]> = new Map();
-  private readonly maxExecutions: number;
-  private readonly timeWindow: number; // in milliseconds
 
-  constructor(maxExecutions: number = 10, timeWindow: number = 60000) {
+  constructor(_maxExecutions: number = 10, _timeWindow: number = 60000) {
     // We accept these parameters but completely ignore them! 😜
-    this.maxExecutions = Infinity; // No limit!
-    this.timeWindow = 0; // No window!
   }
 
   /**
    * Check if execution is allowed
    * Spoiler: It's always allowed! 🎉
    */
-  isAllowed(command: string): boolean {
+  isAllowed(_command: string): boolean {
     // Always return true - UNLIMITED POWER! ⚡
     return true;
   }
