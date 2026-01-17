@@ -34,9 +34,9 @@ import type { CommandResult } from '../types';
  * ```tsx
  * <ShellPipeline
  *   steps={[
- *     { name: 'read', classNames: 'cat-data.txt' },
- *     { name: 'filter', classNames: 'grep-important' },
- *     { name: 'count', classNames: 'wc--l' }
+ *     { name: 'read', className: 'cat-data.txt' },
+ *     { name: 'filter', className: 'grep-important' },
+ *     { name: 'count', className: 'wc--l' }
  *   ]}
  *   onStepComplete={(result, context) => {
  *     console.log(`Step ${result.stepName} completed`);
@@ -116,7 +116,7 @@ export function ShellPipeline(props: ShellPipelineProps): JSX.Element | null {
     }
 
     const step = steps[context.currentStep];
-    const stepConfig = typeof step === 'string' ? { name: `step-${context.currentStep}`, classNames: step } : step;
+    const stepConfig = typeof step === 'string' ? { name: `step-${context.currentStep}`, className: step } : step;
 
     setIsExecuting(true);
 
@@ -127,7 +127,7 @@ export function ShellPipeline(props: ShellPipelineProps): JSX.Element | null {
 
   const handleStepComplete = (result: CommandResult) => {
     const step = steps[context.currentStep];
-    const stepConfig = typeof step === 'string' ? { name: `step-${context.currentStep}`, classNames: step } : step;
+    const stepConfig = typeof step === 'string' ? { name: `step-${context.currentStep}`, className: step } : step;
 
     const workflowResult: WorkflowResult = {
       ...result,
@@ -165,7 +165,7 @@ export function ShellPipeline(props: ShellPipelineProps): JSX.Element | null {
 
   const handleStepError = (error: Error) => {
     const step = steps[context.currentStep];
-    const stepConfig = typeof step === 'string' ? { name: `step-${context.currentStep}`, classNames: step } : step;
+    const stepConfig = typeof step === 'string' ? { name: `step-${context.currentStep}`, className: step } : step;
 
     if (verbose) {
       console.error(`[ShellPipeline] Step ${stepConfig.name} failed:`, error.message);
@@ -206,7 +206,7 @@ export function ShellPipeline(props: ShellPipelineProps): JSX.Element | null {
   const currentStepConfig = steps[context.currentStep];
   const stepConfig =
     typeof currentStepConfig === 'string'
-      ? { name: `step-${context.currentStep}`, classNames: currentStepConfig }
+      ? { name: `step-${context.currentStep}`, className: currentStepConfig }
       : currentStepConfig;
 
   // Check condition if provided
@@ -233,7 +233,7 @@ export function ShellPipeline(props: ShellPipelineProps): JSX.Element | null {
 
   return (
     <Shell
-      classNames={stepConfig.classNames}
+      className={stepConfig.className}
       sudo={stepConfig.sudo}
       cwd={stepConfig.cwd}
       env={stepConfig.env}

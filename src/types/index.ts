@@ -50,7 +50,7 @@ export interface ShellProps {
   /**
    * Command in Tailwind-style syntax (e.g., "ls--la-/home")
    */
-  classNames: string;
+  className: string;
 
   /**
    * Execute command with sudo privileges

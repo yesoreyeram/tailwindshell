@@ -63,6 +63,9 @@ export {
   ShellParallel,
   ShellConditional,
   ShellLoop,
+  IF,
+  ElseIf,
+  Else,
 } from './workflow';
 export type {
   WorkflowStep,
@@ -74,4 +77,8 @@ export type {
   ShellParallelProps,
   ShellConditionalProps,
   ShellLoopProps,
-} from './types/workflow';
+  IFProps,
+  ElseIfProps,
+  ElseProps,
+  Condition,
+} from './workflow';

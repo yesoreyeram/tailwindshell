@@ -13,14 +13,14 @@ import { DEFAULT_SECURITY_POLICY } from './executor/security';
  *
  * @example
  * ```tsx
- * <Shell classNames="ls--la-/home" />
- * <Shell classNames="cat-file.txt_pipe_grep-error" />
- * <Shell classNames="echo-hello" sudo={true} />
+ * <Shell className="ls--la-/home" />
+ * <Shell className="cat-file.txt_pipe_grep-error" />
+ * <Shell className="echo-hello" sudo={true} />
  * ```
  */
 export function Shell(props: ShellProps): JSX.Element | null {
   const {
-    classNames,
+    className,
     sudo = false,
     cwd,
     env,
@@ -51,7 +51,7 @@ export function Shell(props: ShellProps): JSX.Element | null {
 
       try {
         // Parse command
-        const parsed = parse(classNames);
+        const parsed = parse(className);
 
         // Create executor
         const executor = new CommandExecutor({
@@ -100,7 +100,7 @@ export function Shell(props: ShellProps): JSX.Element | null {
     };
 
     executeCommand();
-  }, [classNames, sudo, cwd, env, stdin, timeout, dryRun, verbose, onComplete, onError, securityPolicy]);
+  }, [className, sudo, cwd, env, stdin, timeout, dryRun, verbose, onComplete, onError, securityPolicy]);
 
   // This component doesn't render anything by default
   // It's primarily for side effects (command execution)

@@ -151,7 +151,7 @@ export function ShellLoop(props: ShellLoopProps): JSX.Element | null {
         return (
           <Shell
             key={`item-${index}`}
-            classNames={commandString}
+            className={commandString}
             onComplete={handlers.handleComplete}
             onError={handlers.handleError}
           />

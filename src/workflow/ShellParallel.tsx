@@ -31,9 +31,9 @@ import type { CommandResult } from '../types';
  * ```tsx
  * <ShellParallel
  *   commands={[
- *     { name: 'build', classNames: 'npm-run-build' },
- *     { name: 'test', classNames: 'npm-run-test' },
- *     { name: 'lint', classNames: 'npm-run-lint' }
+ *     { name: 'build', className: 'npm-run-build' },
+ *     { name: 'test', className: 'npm-run-test' },
+ *     { name: 'lint', className: 'npm-run-lint' }
  *   ]}
  *   onComplete={(results) => {
  *     const allPassed = results.every(r => r.exitCode === 0);
@@ -86,7 +86,7 @@ export function ShellParallel(props: ShellParallelProps): JSX.Element | null {
   const createHandlers = (index: number) => {
     const command = commands[index];
     const commandConfig =
-      typeof command === 'string' ? { name: `command-${index}`, classNames: command } : command;
+      typeof command === 'string' ? { name: `command-${index}`, className: command } : command;
 
     const handleComplete = (result: CommandResult) => {
       const workflowResult: WorkflowResult = {
@@ -128,13 +128,13 @@ export function ShellParallel(props: ShellParallelProps): JSX.Element | null {
     <>
       {commands.map((command, index) => {
         const commandConfig =
-          typeof command === 'string' ? { name: `command-${index}`, classNames: command } : command;
+          typeof command === 'string' ? { name: `command-${index}`, className: command } : command;
         const handlers = createHandlers(index);
 
         return (
           <Shell
             key={`${commandConfig.name}-${index}`}
-            classNames={commandConfig.classNames}
+            className={commandConfig.className}
             sudo={commandConfig.sudo}
             cwd={commandConfig.cwd}
             env={commandConfig.env}

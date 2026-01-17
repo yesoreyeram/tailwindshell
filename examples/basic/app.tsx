@@ -12,7 +12,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 1: Simple Command</h2>
         <Shell
-          classNames="echo-Hello-from-Tailwindshell!"
+          className="echo-Hello-from-Tailwindshell!"
           onComplete={(result) => {
             console.log('Echo result:', result.stdout);
           }}
@@ -22,7 +22,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 2: List Files</h2>
         <ShellWithOutput
-          classNames="ls--la"
+          className="ls--la"
           onComplete={(result) => {
             setOutput(result.stdout);
           }}
@@ -45,7 +45,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 3: Piped Commands</h2>
         <Shell
-          classNames="echo-test_pipe_grep-t_pipe_wc--l"
+          className="echo-test_pipe_grep-t_pipe_wc--l"
           verbose={true}
           onComplete={(result) => {
             console.log('Pipe result:', result);
@@ -56,7 +56,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 4: With Security Policy</h2>
         <Shell
-          classNames="cat-/etc/hosts"
+          className="cat-/etc/hosts"
           securityPolicy={{
             allowedCommands: ['cat'],
             allowedPaths: ['/etc/hosts'],
@@ -74,7 +74,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 5: Dry Run Mode</h2>
         <Shell
-          classNames="rm--rf-/"
+          className="rm--rf-/"
           dryRun={true}
           onComplete={(result) => {
             console.log('Dry run:', result.stdout);
@@ -85,7 +85,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 6: Working Directory</h2>
         <Shell
-          classNames="pwd"
+          className="pwd"
           cwd="/tmp"
           onComplete={(result) => {
             console.log('Current directory:', result.stdout);
@@ -96,7 +96,7 @@ export default function BasicExample() {
       <section>
         <h2>Example 7: Environment Variables</h2>
         <Shell
-          classNames="echo-$CUSTOM_VAR"
+          className="echo-$CUSTOM_VAR"
           env={{ CUSTOM_VAR: 'Hello from environment!' }}
           onComplete={(result) => {
             console.log('Env var:', result.stdout);

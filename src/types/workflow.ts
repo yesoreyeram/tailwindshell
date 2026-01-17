@@ -10,7 +10,7 @@ import React from 'react';
  */
 export interface WorkflowStep {
   name: string;
-  classNames: string;
+  className: string;
   sudo?: boolean;
   cwd?: string;
   env?: Record<string, string>;

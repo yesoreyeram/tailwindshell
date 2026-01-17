@@ -14,7 +14,7 @@ import type { WorkflowResult } from '../src/types/workflow';
 
 // Mock Shell component
 jest.mock('../src/Shell', () => ({
-  Shell: ({ classNames, stdin, onComplete, onError }: any) => {
+  Shell: ({ className, stdin, onComplete, onError }: any) => {
     // Simulate command execution
     setTimeout(() => {
       if (classNames.includes('fail')) {
@@ -93,8 +93,8 @@ describe('ShellPipeline', () => {
     render(
       <ShellPipeline
         steps={[
-          { name: 'extract', classNames: 'cat-data.txt' },
-          { name: 'filter', classNames: 'grep-error' },
+          { name: 'extract', className: 'cat-data.txt' },
+          { name: 'filter', className: 'grep-error' },
         ]}
         onStepComplete={(result) => results.push(result)}
       />
@@ -130,8 +130,8 @@ describe('ShellWorkflow', () => {
     render(
       <ShellWorkflow
         steps={[
-          { name: 'step1', classNames: 'cmd1' },
-          { name: 'step2', classNames: 'cmd2' },
+          { name: 'step1', className: 'cmd1' },
+          { name: 'step2', className: 'cmd2' },
         ]}
         onStepComplete={(result) => results.push(result)}
       />
@@ -147,9 +147,9 @@ describe('ShellWorkflow', () => {
     render(
       <ShellWorkflow
         steps={[
-          { name: 'step1', classNames: 'cmd1' },
-          { name: 'step2', classNames: 'cmd2' },
-          { name: 'step3', classNames: 'cmd3' },
+          { name: 'step1', className: 'cmd1' },
+          { name: 'step2', className: 'cmd2' },
+          { name: 'step3', className: 'cmd3' },
         ]}
         parallel={true}
         onStepComplete={(result) => {
@@ -172,13 +172,13 @@ describe('ShellWorkflow', () => {
     render(
       <ShellWorkflow
         steps={[
-          { name: 'step1', classNames: 'cmd1' },
+          { name: 'step1', className: 'cmd1' },
           {
             name: 'step2',
-            classNames: 'cmd2',
+            className: 'cmd2',
             condition: () => false, // Always skip
           },
-          { name: 'step3', classNames: 'cmd3' },
+          { name: 'step3', className: 'cmd3' },
         ]}
         onStepComplete={(result) => results.push(result)}
       />
@@ -198,10 +198,10 @@ describe('ShellWorkflow', () => {
     render(
       <ShellWorkflow
         steps={[
-          { name: 'build', classNames: 'npm-run-build' },
+          { name: 'build', className: 'npm-run-build' },
           {
             name: 'deploy',
-            classNames: 'npm-run-deploy',
+            className: 'npm-run-deploy',
             condition: (prevResults) => prevResults[0]?.exitCode === 0,
           },
         ]}
@@ -238,8 +238,8 @@ describe('ShellParallel', () => {
     render(
       <ShellParallel
         commands={[
-          { name: 'build', classNames: 'npm-run-build' },
-          { name: 'test', classNames: 'npm-test' },
+          { name: 'build', className: 'npm-run-build' },
+          { name: 'test', className: 'npm-test' },
         ]}
         onComplete={(completedResults) => {
           results.push(...completedResults);

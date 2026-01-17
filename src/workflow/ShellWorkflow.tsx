@@ -24,16 +24,16 @@ import type { CommandResult } from '../types';
  *   steps={[
  *     {
  *       name: 'check-file',
- *       classNames: 'test--f-data.txt',
+ *       className: 'test--f-data.txt',
  *     },
  *     {
  *       name: 'process',
- *       classNames: 'cat-data.txt',
+ *       className: 'cat-data.txt',
  *       condition: (results) => results[0].exitCode === 0
  *     },
  *     {
  *       name: 'analyze',
- *       classNames: 'wc--l',
+ *       className: 'wc--l',
  *       transform: (input) => input.toUpperCase()
  *     }
  *   ]}
@@ -272,7 +272,7 @@ export function ShellWorkflow(props: ShellWorkflowProps): JSX.Element | null {
         return (
           <Shell
             key={`${step.name}-${stepIndex}`}
-            classNames={step.classNames}
+            className={step.className}
             sudo={step.sudo}
             cwd={step.cwd}
             env={step.env}

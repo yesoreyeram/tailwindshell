@@ -97,8 +97,8 @@ Execute commands based on runtime conditions.
 ```tsx
 <ShellConditional
   condition={() => process.env.NODE_ENV === 'production'}
-  then={<Shell classNames="npm-run-deploy:prod" />}
-  else={<Shell classNames="npm-run-deploy:dev" />}
+  then={<Shell className="npm-run-deploy:prod" />}
+  else={<Shell className="npm-run-deploy:dev" />}
 />
 ```
 
@@ -119,6 +119,54 @@ Loop over items and execute commands for each item.
   command={(file) => `cat-${file}_pipe_wc--l`}
   onComplete={(results) => console.log('All files processed')}
 />
+```
+
+### IF, ElseIf, Else
+
+Declarative conditional rendering with chained conditions.
+
+**Use cases:**
+- Environment-based execution
+- Feature flag workflows
+- Dynamic branching logic
+- Multi-condition decision trees
+- File existence checks
+- Command success/failure branching
+
+**Command-based conditions** (exit code 0 = true):
+```tsx
+// Check if files exist and deploy accordingly
+<IF className="test--f-production.env">
+  <Shell className="npm-run-deploy:prod" sudo={true} />
+
+  <ElseIf className="test--f-staging.env">
+    <Shell className="npm-run-deploy:staging" />
+  </ElseIf>
+
+  <Else>
+    <Shell className="npm-run-deploy:dev" />
+  </Else>
+</IF>
+```
+
+**Boolean/function conditions:**
+```tsx
+<IF condition={process.env.NODE_ENV === 'production'}>
+  <Shell className="npm-run-deploy:prod" sudo={true} />
+  <Else>
+    <Shell className="npm-run-deploy:dev" />
+  </Else>
+</IF>
+```
+
+**Async conditions:**
+```tsx
+<IF condition={async () => await checkFileExists('data.csv')}>
+  <ShellPipeline steps={['cat-data.csv', 'process']} />
+  <Else>
+    <Shell className="echo-File-not-found" />
+  </Else>
+</IF>
 ```
 
 ## Common Patterns
@@ -149,7 +197,7 @@ Loop over items and execute commands for each item.
   onComplete={(results) => {
     if (results.every(r => r.exitCode === 0)) {
       // All tests passed, deploy
-      return <Shell classNames="npm-run-deploy" />;
+      return <Shell className="npm-run-deploy" />;
     }
   }}
 />
@@ -170,7 +218,7 @@ Loop over items and execute commands for each item.
     />
   }
   else={
-    <Shell classNames="echo-Staging-health-check-failed" />
+    <Shell className="echo-Staging-health-check-failed" />
   }
 />
 ```
@@ -264,6 +312,7 @@ Loop over items and execute commands for each item.
 3. **Use ShellParallel** when commands are independent and can run simultaneously
 4. **Use ShellConditional** for runtime branching based on dynamic conditions
 5. **Use ShellLoop** for batch processing and iterative tasks
+6. **Use IF/ElseIf/Else** for declarative conditional rendering with multiple branches
 
 ### Performance Tips
 
@@ -291,6 +340,7 @@ Loop over items and execute commands for each item.
 - `pipeline-example.tsx` - ShellPipeline examples
 - `workflow-example.tsx` - ShellWorkflow examples
 - `parallel-example.tsx` - ShellParallel, ShellConditional, ShellLoop examples
+- `conditional-example.tsx` - IF, ElseIf, Else examples
 
 ## Running Examples
 

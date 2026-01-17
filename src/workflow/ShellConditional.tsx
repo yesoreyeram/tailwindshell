@@ -15,8 +15,8 @@ import type { ShellConditionalProps } from '../types/workflow';
  * ```tsx
  * <ShellConditional
  *   condition={() => process.env.NODE_ENV === 'production'}
- *   then={<Shell classNames="npm-run-build" />}
- *   else={<Shell classNames="npm-run-dev" />}
+ *   then={<Shell className="npm-run-build" />}
+ *   else={<Shell className="npm-run-dev" />}
  * />
  * ```
  *
@@ -32,7 +32,7 @@ import type { ShellConditionalProps } from '../types/workflow';
  *       steps={['cat-data.txt', 'grep-error', 'wc--l']}
  *     />
  *   }
- *   else={<Shell classNames="echo-File-not-found" />}
+ *   else={<Shell className="echo-File-not-found" />}
  * />
  * ```
  */

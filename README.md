@@ -32,7 +32,7 @@ Tailwindshell transforms traditional shell commands into React-friendly syntax:
 exec('ls -la /home', callback);
 
 // Tailwindshell approach
-<Shell classNames="ls--la-/home" />
+<Shell className="ls--la-/home" />
 ```
 
 ### Why Tailwindshell?
@@ -72,13 +72,13 @@ pnpm add tailwindshell
 import { Shell } from 'tailwindshell';
 
 // Simple command
-<Shell classNames="echo-Hello-World" />
+<Shell className="echo-Hello-World" />
 
 // List files with flags
-<Shell classNames="ls--la-/home" />
+<Shell className="ls--la-/home" />
 
 // Search with grep
-<Shell classNames="grep--color-auto-error-app.log" />
+<Shell className="grep--color-auto-error-app.log" />
 ```
 
 ### With Callbacks
@@ -98,7 +98,7 @@ function MyComponent() {
 
   return (
     <Shell
-      classNames="node--version"
+      className="node--version"
       onComplete={handleComplete}
       onError={handleError}
     />
@@ -133,7 +133,7 @@ A Tailwindshell command consists of:
 // Argument: file.txt
 // Operator: pipe
 // Next command: grep with flag and argument
-<Shell classNames="cat-file.txt_pipe_grep--color-error" />
+<Shell className="cat-file.txt_pipe_grep--color-error" />
 ```
 
 ## Syntax Reference
@@ -142,42 +142,42 @@ A Tailwindshell command consists of:
 
 ```tsx
 // No arguments
-<Shell classNames="pwd" />
+<Shell className="pwd" />
 
 // Single argument
-<Shell classNames="cat-file.txt" />
+<Shell className="cat-file.txt" />
 
 // Multiple arguments
-<Shell classNames="cp-source.txt-dest.txt" />
+<Shell className="cp-source.txt-dest.txt" />
 ```
 
 ### Flags
 
 ```tsx
 // Short flag
-<Shell classNames="ls--l" />
+<Shell className="ls--l" />
 
 // Multiple short flags
-<Shell classNames="ls--la" />
+<Shell className="ls--la" />
 
 // Long flag
-<Shell classNames="grep--color-red" />
+<Shell className="grep--color-red" />
 
 // Flag with value
-<Shell classNames="grep--color-auto-error" />
+<Shell className="grep--color-auto-error" />
 ```
 
 ### File Paths
 
 ```tsx
 // Absolute path (dashes become slashes)
-<Shell classNames="cat-/home/user/file.txt" />
+<Shell className="cat-/home/user/file.txt" />
 
 // Relative path
-<Shell classNames="cat-./data/file.txt" />
+<Shell className="cat-./data/file.txt" />
 
 // Current directory
-<Shell classNames="ls-." />
+<Shell className="ls-." />
 ```
 
 ### Command Chaining
@@ -185,35 +185,35 @@ A Tailwindshell command consists of:
 #### Pipe (`|`)
 
 ```tsx
-<Shell classNames="cat-file.txt_pipe_grep-error_pipe_wc--l" />
+<Shell className="cat-file.txt_pipe_grep-error_pipe_wc--l" />
 // Executes: cat file.txt | grep error | wc -l
 ```
 
 #### And (`&&`)
 
 ```tsx
-<Shell classNames="mkdir-test_and_cd-test_and_ls" />
+<Shell className="mkdir-test_and_cd-test_and_ls" />
 // Executes: mkdir test && cd test && ls
 ```
 
 #### Or (`||`)
 
 ```tsx
-<Shell classNames="test--f-file.txt_or_echo-not-found" />
+<Shell className="test--f-file.txt_or_echo-not-found" />
 // Executes: test -f file.txt || echo not-found
 ```
 
 #### Sequential (`;`)
 
 ```tsx
-<Shell classNames="echo-first_then_echo-second" />
+<Shell className="echo-first_then_echo-second" />
 // Executes: echo first ; echo second
 ```
 
 #### Background (`&`)
 
 ```tsx
-<Shell classNames="sleep-10_bg_echo-done" />
+<Shell className="sleep-10_bg_echo-done" />
 // Executes: sleep 10 & echo done
 ```
 
@@ -237,7 +237,7 @@ Tailwindshell implements multiple layers of security to protect your application
 
 ```tsx
 <Shell
-  classNames="cat-/app/data/file.txt"
+  className="cat-/app/data/file.txt"
   securityPolicy={{
     allowedCommands: ['cat', 'ls', 'grep'],
     allowedPaths: ['/app/data'],
@@ -250,7 +250,7 @@ Tailwindshell implements multiple layers of security to protect your application
 
 ```tsx
 <Shell
-  classNames="systemctl-restart-nginx"
+  className="systemctl-restart-nginx"
   sudo={true}
   securityPolicy={{
     requireSudo: true,
@@ -265,7 +265,7 @@ Test commands without execution:
 
 ```tsx
 <Shell
-  classNames="rm--rf-important-data"
+  className="rm--rf-important-data"
   dryRun={true}
   onComplete={(result) => {
     console.log('Would execute:', result.command);
@@ -283,7 +283,7 @@ Execute commands based on conditions:
 import { parseConditional, conditionalToShell } from 'tailwindshell';
 
 // If file exists, cat it; otherwise, echo not found
-<Shell classNames="if-test--f-file.txt_then_cat-file.txt_else_echo-not-found" />
+<Shell className="if-test--f-file.txt_then_cat-file.txt_else_echo-not-found" />
 ```
 
 ### Loops
@@ -294,14 +294,14 @@ import { parseConditional, conditionalToShell } from 'tailwindshell';
 import { parseLoop, loopToShell } from 'tailwindshell';
 
 // Process multiple files
-<Shell classNames="for-file-in-*.txt-*.log_do_cat-$file" />
+<Shell className="for-file-in-*.txt-*.log_do_cat-$file" />
 ```
 
 #### While Loops
 
 ```tsx
 // Wait for file to exist
-<Shell classNames="while-test-!--f-ready.txt_do_sleep-1" />
+<Shell className="while-test-!--f-ready.txt_do_sleep-1" />
 ```
 
 ### Variables
@@ -415,8 +415,8 @@ import { ShellConditional } from 'tailwindshell';
 
 <ShellConditional
   condition={() => process.env.NODE_ENV === 'production'}
-  then={<Shell classNames="npm-run-deploy:prod" />}
-  else={<Shell classNames="npm-run-deploy:dev" />}
+  then={<Shell className="npm-run-deploy:prod" />}
+  else={<Shell className="npm-run-deploy:dev" />}
 />
 ```
 
@@ -437,6 +437,55 @@ import { ShellLoop } from 'tailwindshell';
 />
 ```
 
+#### IF, ElseIf, Else - Declarative Conditionals
+
+Use declarative conditional rendering with chained conditions.
+
+**Command-based conditions** (exit code 0 = true):
+
+```tsx
+import { IF, ElseIf, Else } from 'tailwindshell';
+
+// Use Tailwind-style commands as conditions
+<IF className="test--f-production.env">
+  <Shell className="npm-run-deploy:prod" sudo={true} />
+
+  <ElseIf className="test--f-staging.env">
+    <Shell className="npm-run-deploy:staging" />
+  </ElseIf>
+
+  <ElseIf className="test--f-qa.env">
+    <Shell className="npm-run-deploy:qa" />
+  </ElseIf>
+
+  <Else>
+    <Shell className="npm-run-deploy:dev" />
+  </Else>
+</IF>
+```
+
+**Boolean/function conditions**:
+
+```tsx
+<IF condition={process.env.NODE_ENV === 'production'}>
+  <Shell className="npm-run-deploy:prod" sudo={true} />
+  <Else>
+    <Shell className="npm-run-deploy:dev" />
+  </Else>
+</IF>
+```
+
+**Async conditions**:
+
+```tsx
+<IF condition={async () => await checkFileExists('data.csv')}>
+  <ShellPipeline steps={['cat-data.csv', 'process']} />
+  <Else>
+    <Shell className="echo-File-not-found" />
+  </Else>
+</IF>
+```
+
 #### Passing Output Between Commands
 
 The `Shell` component supports `stdin` to pass data from one command to another:
@@ -446,13 +495,13 @@ const [output, setOutput] = useState('');
 
 // First command
 <Shell
-  classNames="cat-data.txt"
+  className="cat-data.txt"
   onComplete={(result) => setOutput(result.stdout)}
 />
 
 // Second command uses first command's output
 <Shell
-  classNames="grep-error"
+  className="grep-error"
   stdin={output}
   onComplete={(result) => console.log('Filtered:', result.stdout)}
 />
@@ -537,7 +586,7 @@ import { Shell } from 'tailwindshell';
 function LogAnalyzer() {
   return (
     <Shell
-      classNames="cat-/var/log/app.log_pipe_grep-ERROR_pipe_wc--l"
+      className="cat-/var/log/app.log_pipe_grep-ERROR_pipe_wc--l"
       onComplete={(result) => {
         console.log(`Found ${result.stdout.trim()} errors`);
       }}
@@ -553,15 +602,15 @@ function DeployApp() {
   return (
     <>
       <Shell
-        classNames="npm-run-build"
+        className="npm-run-build"
         onComplete={() => console.log('Build complete')}
       />
       <Shell
-        classNames="npm-run-test"
+        className="npm-run-test"
         onComplete={() => console.log('Tests passed')}
       />
       <Shell
-        classNames="rsync--av-build/-user@server:/var/www/"
+        className="rsync--av-build/-user@server:/var/www/"
         sudo={true}
         onComplete={() => console.log('Deployed successfully')}
       />
@@ -579,19 +628,19 @@ function SystemMonitor() {
   return (
     <>
       <Shell
-        classNames="df--h"
+        className="df--h"
         onComplete={(result) => {
           setStats((prev) => ({ ...prev, disk: result.stdout }));
         }}
       />
       <Shell
-        classNames="free--h"
+        className="free--h"
         onComplete={(result) => {
           setStats((prev) => ({ ...prev, memory: result.stdout }));
         }}
       />
       <Shell
-        classNames="uptime"
+        className="uptime"
         onComplete={(result) => {
           setStats((prev) => ({ ...prev, uptime: result.stdout }));
         }}
@@ -607,7 +656,7 @@ function SystemMonitor() {
 function ConditionalDeploy() {
   return (
     <Shell
-      classNames="if-npm-test_then_npm-run-deploy_else_echo-Tests-failed"
+      className="if-npm-test_then_npm-run-deploy_else_echo-Tests-failed"
       onComplete={(result) => {
         if (result.exitCode === 0) {
           console.log('Deployment successful');
@@ -626,7 +675,7 @@ function ConditionalDeploy() {
 function BatchProcessor() {
   return (
     <Shell
-      classNames="for-file-in-/data/*.csv_do_node-process.js-$file"
+      className="for-file-in-/data/*.csv_do_node-process.js-$file"
       verbose={true}
       timeout={300000} // 5 minutes
       onComplete={(result) => {
@@ -644,7 +693,7 @@ function BatchProcessor() {
 ```tsx
 // Good: Explicit security policy
 <Shell
-  classNames="cat-user-data.txt"
+  className="cat-user-data.txt"
   securityPolicy={{
     allowedCommands: ['cat'],
     allowedPaths: ['/app/data'],
@@ -652,14 +701,14 @@ function BatchProcessor() {
 />
 
 // Avoid: No security restrictions
-<Shell classNames="cat-user-data.txt" />
+<Shell className="cat-user-data.txt" />
 ```
 
 ### 2. Handle Errors Gracefully
 
 ```tsx
 <Shell
-  classNames="risky-command"
+  className="risky-command"
   onError={(error) => {
     logError(error);
     notifyAdmin(error);
@@ -673,7 +722,7 @@ function BatchProcessor() {
 ```tsx
 // Test commands before production
 <Shell
-  classNames="complex-command"
+  className="complex-command"
   dryRun={process.env.NODE_ENV !== 'production'}
 />
 ```
@@ -682,10 +731,10 @@ function BatchProcessor() {
 
 ```tsx
 // Short timeout for quick commands
-<Shell classNames="ls" timeout={5000} />
+<Shell className="ls" timeout={5000} />
 
 // Longer timeout for build processes
-<Shell classNames="npm-run-build" timeout={600000} />
+<Shell className="npm-run-build" timeout={600000} />
 ```
 
 ### 5. Validate Input
@@ -705,7 +754,7 @@ function SafeFileReader({ filename }: { filename: string }) {
 
 ```tsx
 <Shell
-  classNames="deploy-script.sh"
+  className="deploy-script.sh"
   env={{
     NODE_ENV: 'production',
     API_KEY: process.env.API_KEY,
@@ -717,7 +766,7 @@ function SafeFileReader({ filename }: { filename: string }) {
 
 ```tsx
 <Shell
-  classNames="debug-command"
+  className="debug-command"
   verbose={process.env.NODE_ENV === 'development'}
 />
 ```
@@ -743,7 +792,7 @@ function SafeFileReader({ filename }: { filename: string }) {
 const [cachedResult, setCachedResult] = useState(null);
 
 <Shell
-  classNames="expensive-command"
+  className="expensive-command"
   onComplete={(result) => {
     setCachedResult(result);
     localStorage.setItem('cache-key', JSON.stringify(result));
@@ -760,7 +809,7 @@ const [cachedResult, setCachedResult] = useState(null);
 ```tsx
 // Ensure command is in PATH
 <Shell
-  classNames="custom-command"
+  className="custom-command"
   env={{ PATH: process.env.PATH + ':/custom/bin' }}
 />
 ```
@@ -769,21 +818,21 @@ const [cachedResult, setCachedResult] = useState(null);
 
 ```tsx
 // Use sudo or adjust file permissions
-<Shell classNames="privileged-command" sudo={true} />
+<Shell className="privileged-command" sudo={true} />
 ```
 
 #### Timeout Errors
 
 ```tsx
 // Increase timeout for long-running commands
-<Shell classNames="long-command" timeout={300000} />
+<Shell className="long-command" timeout={300000} />
 ```
 
 ### Debug Mode
 
 ```tsx
 <Shell
-  classNames="problematic-command"
+  className="problematic-command"
   verbose={true}
   dryRun={true}
   onComplete={(result) => {

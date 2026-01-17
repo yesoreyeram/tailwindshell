@@ -28,7 +28,7 @@ export default function SystemMonitoringDashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         <MetricCard title="Disk Usage">
           <Shell
-            classNames="df--h"
+            className="df--h"
             onComplete={(result) => {
               setMetrics((prev) => ({ ...prev, disk: result.stdout }));
             }}
@@ -42,7 +42,7 @@ export default function SystemMonitoringDashboard() {
 
         <MetricCard title="Memory Usage">
           <Shell
-            classNames="free--h"
+            className="free--h"
             onComplete={(result) => {
               setMetrics((prev) => ({ ...prev, memory: result.stdout }));
             }}
@@ -56,7 +56,7 @@ export default function SystemMonitoringDashboard() {
 
         <MetricCard title="CPU Info">
           <Shell
-            classNames="top--b--n-1_pipe_head--n-5"
+            className="top--b--n-1_pipe_head--n-5"
             onComplete={(result) => {
               setMetrics((prev) => ({ ...prev, cpu: result.stdout }));
             }}
@@ -71,7 +71,7 @@ export default function SystemMonitoringDashboard() {
 
         <MetricCard title="System Uptime">
           <Shell
-            classNames="uptime"
+            className="uptime"
             onComplete={(result) => {
               setMetrics((prev) => ({ ...prev, uptime: result.stdout }));
             }}
@@ -87,7 +87,7 @@ export default function SystemMonitoringDashboard() {
       <div style={{ marginTop: '20px' }}>
         <h2>Active Processes</h2>
         <Shell
-          classNames="ps-aux_pipe_wc--l"
+          className="ps-aux_pipe_wc--l"
           onComplete={(result) => {
             setMetrics((prev) => ({
               ...prev,
