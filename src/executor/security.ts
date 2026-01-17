@@ -57,14 +57,6 @@ export function validateSecurity(
 }
 
 /**
- * Build full command string from parsed command
- * (Not used anymore since we removed validation)
- */
-// function buildFullCommand(parsed: ParsedCommand): string {
-//   ... implementation removed
-// }
-
-/**
  * Sanitize command for safe execution
  * LOL JK - no sanitization! Raw and dangerous! 🤪
  */

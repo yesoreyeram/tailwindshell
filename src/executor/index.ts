@@ -16,9 +16,18 @@ export class CommandExecutor {
   private context: ExecutionContext;
 
   constructor(context: Partial<ExecutionContext> = {}) {
+    // Filter out undefined values from env
+    const cleanEnv: Record<string, string> = {};
+    const sourceEnv = { ...process.env, ...context.env };
+    for (const [key, value] of Object.entries(sourceEnv)) {
+      if (value !== undefined) {
+        cleanEnv[key] = value;
+      }
+    }
+
     this.context = {
       cwd: context.cwd || process.cwd(),
-      env: { ...process.env, ...context.env } as Record<string, string>,
+      env: cleanEnv,
       sudo: context.sudo || false,
       securityPolicy: { ...DEFAULT_SECURITY_POLICY, ...context.securityPolicy },
       timeout: context.timeout || 0, // No timeout by default - let it run!
