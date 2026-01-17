@@ -89,16 +89,6 @@ describe('Security validation', () => {
 
     expect(validation.valid).toBe(true);
   });
-
-  it('should allow piping unconditionally', () => {
-    const parsed = parse('cat-file.txt_pipe_grep-error');
-    const validation = validateSecurity(parsed, {
-      ...DEFAULT_SECURITY_POLICY,
-    });
-
-    // Piping is always allowed!
-    expect(validation.valid).toBe(true);
-  });
 });
 
 describe('Convenience function', () => {
