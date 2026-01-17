@@ -22,7 +22,7 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "type-check": "tsc --noEmit",
-    "prepublishOnly": "npm run build && npm run test"
+    "prepublishOnly": "yarn build && yarn test"
   },
   "keywords": [
     "react",

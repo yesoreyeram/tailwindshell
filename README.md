@@ -117,7 +117,7 @@ Tailwindshell converts dash-separated class names into shell commands:
 | `ls--la-/home` | `ls -la /home` |
 | `cat-file.txt` | `cat file.txt` |
 | `grep--color-auto-error-app.log` | `grep --color auto error app.log` |
-| `npm-install` | `npm install` |
+| `npm-install` | `yarn add` |
 
 ### Command Components
 
@@ -314,7 +314,7 @@ variables.set('PROJECT_DIR', '/home/user/projects');
 
 // Use variables in commands
 const command = variables.substitute('cd-$PROJECT_DIR_and_ls');
-<Shell classNames={command} />
+<Shell className={command} />
 ```
 
 ### Streaming Output
@@ -368,16 +368,16 @@ import { ShellWorkflow } from 'tailwindshell';
   steps={[
     {
       name: 'build',
-      classNames: 'npm-run-build'
+      className: 'npm-run-build'
     },
     {
       name: 'test',
-      classNames: 'npm-test',
+      className: 'npm-test',
       condition: (results) => results[0].exitCode === 0
     },
     {
       name: 'deploy',
-      classNames: 'npm-run-deploy',
+      className: 'npm-run-deploy',
       condition: (results) => results.every(r => r.exitCode === 0),
       sudo: true
     }
@@ -515,7 +515,7 @@ For more workflow examples, see [examples/workflows/](examples/workflows/).
 
 ```tsx
 interface ShellProps {
-  classNames: string;           // Command in Tailwind-style syntax
+  className: string;            // Command in Tailwind-style syntax
   sudo?: boolean;               // Execute with sudo
   cwd?: string;                 // Working directory
   env?: Record<string, string>; // Environment variables
@@ -746,7 +746,7 @@ function SafeFileReader({ filename }: { filename: string }) {
     throw new Error('Invalid filename');
   }
 
-  return <Shell classNames={`cat-${filename}`} />;
+  return <Shell className={`cat-${filename}`} />;
 }
 ```
 
@@ -855,7 +855,7 @@ import type {
 } from 'tailwindshell';
 
 const props: ShellProps = {
-  classNames: 'ls--la',
+  className: 'ls--la',
   onComplete: (result: CommandResult) => {
     console.log(result.stdout);
   },
@@ -871,23 +871,23 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ```bash
 git clone https://github.com/yourusername/tailwindshell.git
 cd tailwindshell
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 ### Running Tests
 
 ```bash
-npm test
-npm run test:coverage
+yarn test
+yarn test:coverage
 ```
 
 ### Code Quality
 
 ```bash
-npm run lint
-npm run format
-npm run type-check
+yarn lint
+yarn format
+yarn type-check
 ```
 
 ## License
