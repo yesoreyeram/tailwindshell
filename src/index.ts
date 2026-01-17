@@ -55,3 +55,23 @@ export {
   parseVariableAssignment,
   globalVariables,
 } from './features/variables';
+
+// Export workflow components
+export {
+  ShellPipeline,
+  ShellWorkflow,
+  ShellParallel,
+  ShellConditional,
+  ShellLoop,
+} from './workflow';
+export type {
+  WorkflowStep,
+  WorkflowResult,
+  WorkflowStatus,
+  WorkflowContext,
+  ShellPipelineProps,
+  ShellWorkflowProps,
+  ShellParallelProps,
+  ShellConditionalProps,
+  ShellLoopProps,
+} from './types/workflow';

@@ -108,6 +108,12 @@ export class CommandExecutor {
         stdio: options.captureOutput !== false ? 'pipe' : 'inherit',
       });
 
+      // Write stdin if provided
+      if (options.stdin && child.stdin) {
+        child.stdin.write(options.stdin);
+        child.stdin.end();
+      }
+
       if (options.captureOutput !== false) {
         child.stdout?.on('data', (data) => {
           stdout += data.toString();

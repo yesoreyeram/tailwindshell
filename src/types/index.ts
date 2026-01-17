@@ -68,6 +68,11 @@ export interface ShellProps {
   env?: Record<string, string>;
 
   /**
+   * Standard input to pipe into the command
+   */
+  stdin?: string;
+
+  /**
    * Callback when command completes
    */
   onComplete?: (result: CommandResult) => void;
@@ -146,6 +151,7 @@ export interface ExecutionOptions {
   dryRun?: boolean;
   captureOutput?: boolean;
   shell?: string;
+  stdin?: string;
 }
 
 /**

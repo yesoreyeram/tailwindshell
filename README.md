@@ -334,6 +334,132 @@ await executor.executeStream(parsed, (data, type) => {
 });
 ```
 
+### Workflow Components
+
+Tailwindshell provides powerful workflow components for orchestrating complex command execution patterns.
+
+#### ShellPipeline - Sequential Execution
+
+Execute commands in sequence, passing output from one to the next:
+
+```tsx
+import { ShellPipeline } from 'tailwindshell';
+
+<ShellPipeline
+  steps={[
+    'cat-file.txt',
+    'grep-error',
+    'wc--l'
+  ]}
+  onComplete={(results) => {
+    console.log('Pipeline complete:', results);
+  }}
+/>
+```
+
+#### ShellWorkflow - Complex Workflows
+
+Advanced workflow with conditional steps and named stages:
+
+```tsx
+import { ShellWorkflow } from 'tailwindshell';
+
+<ShellWorkflow
+  steps={[
+    {
+      name: 'build',
+      classNames: 'npm-run-build'
+    },
+    {
+      name: 'test',
+      classNames: 'npm-test',
+      condition: (results) => results[0].exitCode === 0
+    },
+    {
+      name: 'deploy',
+      classNames: 'npm-run-deploy',
+      condition: (results) => results.every(r => r.exitCode === 0),
+      sudo: true
+    }
+  ]}
+  onComplete={(results) => console.log('Workflow done')}
+/>
+```
+
+#### ShellParallel - Parallel Execution
+
+Run multiple commands simultaneously:
+
+```tsx
+import { ShellParallel } from 'tailwindshell';
+
+<ShellParallel
+  commands={[
+    'npm-run-test:unit',
+    'npm-run-test:integration',
+    'npm-run-test:e2e'
+  ]}
+  onComplete={(results) => {
+    const allPassed = results.every(r => r.exitCode === 0);
+    console.log(allPassed ? 'All tests passed!' : 'Some tests failed');
+  }}
+/>
+```
+
+#### ShellConditional - Conditional Execution
+
+Execute commands based on runtime conditions:
+
+```tsx
+import { ShellConditional } from 'tailwindshell';
+
+<ShellConditional
+  condition={() => process.env.NODE_ENV === 'production'}
+  then={<Shell classNames="npm-run-deploy:prod" />}
+  else={<Shell classNames="npm-run-deploy:dev" />}
+/>
+```
+
+#### ShellLoop - Batch Processing
+
+Loop over items and execute commands:
+
+```tsx
+import { ShellLoop } from 'tailwindshell';
+
+<ShellLoop
+  items={['file1.txt', 'file2.txt', 'file3.txt']}
+  command={(file) => `cat-${file}_pipe_wc--l`}
+  parallel={true}
+  onIteration={(result, file) => {
+    console.log(`${file}: ${result.stdout.trim()} lines`);
+  }}
+/>
+```
+
+#### Passing Output Between Commands
+
+The `Shell` component supports `stdin` to pass data from one command to another:
+
+```tsx
+const [output, setOutput] = useState('');
+
+// First command
+<Shell
+  classNames="cat-data.txt"
+  onComplete={(result) => setOutput(result.stdout)}
+/>
+
+// Second command uses first command's output
+<Shell
+  classNames="grep-error"
+  stdin={output}
+  onComplete={(result) => console.log('Filtered:', result.stdout)}
+/>
+```
+
+For more workflow examples, see [examples/workflows/](examples/workflows/).
+
 ## API Reference
 
 ### Shell Component

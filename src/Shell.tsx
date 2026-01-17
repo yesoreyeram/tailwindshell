@@ -24,6 +24,7 @@ export function Shell(props: ShellProps): JSX.Element | null {
     sudo = false,
     cwd,
     env,
+    stdin,
     onComplete,
     onError,
     securityPolicy,
@@ -63,7 +64,7 @@ export function Shell(props: ShellProps): JSX.Element | null {
         });
 
         // Execute command
-        const commandResult = await executor.execute(parsed, { dryRun });
+        const commandResult = await executor.execute(parsed, { dryRun, stdin });
 
         setResult(commandResult);
 
@@ -99,7 +100,7 @@ export function Shell(props: ShellProps): JSX.Element | null {
     };
 
     executeCommand();
-  }, [classNames, sudo, cwd, env, timeout, dryRun, verbose, onComplete, onError, securityPolicy]);
+  }, [classNames, sudo, cwd, env, stdin, timeout, dryRun, verbose, onComplete, onError, securityPolicy]);
 
   // This component doesn't render anything by default
   // It's primarily for side effects (command execution)
